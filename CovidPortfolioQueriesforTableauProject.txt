@@ -1,0 +1,68 @@
+CovidPortfolioProject Queries for Tableau Project
+
+
+
+-- 1. 
+
+Select SUM(new_cases) as total_cases, SUM(new_deaths) as total_deaths, SUM(cast(new_deaths as float))/SUM(New_Cases)*100 as DeathPercentage
+From CovidPortfolioProject..CovidDeaths
+--Where location like '%states%'
+where continent is not null 
+--Group By date
+order by 1,2
+
+
+-- To double check based off the data provided
+
+--Select SUM(new_cases) as total_cases, SUM(new_deaths) as total_deaths, SUM(cast(new_deaths as float))/SUM(New_Cases)*100 as DeathPercentage
+--From CovidPortfolioProject..CovidDeaths
+----Where location like '%states%'
+--where location = 'World'
+----Group By date
+--order by 1,2
+
+
+-- 2. 
+
+-- Filter out data to stay consistent
+-- European Union is part of Europe
+
+Select location, SUM(new_deaths) as TotalDeathCount
+From CovidPortfolioProject..CovidDeaths
+--Where location like '%states%'
+Where continent is null 
+and location not in ('World', 'European Union', 'International')
+and location not like ('%income%')
+Group by location
+order by TotalDeathCount desc
+
+
+-- 3.
+
+Select Location, Population, MAX(total_cases) as HighestInfectionCount, Max((Cast(total_cases as float)/population))*100 as PercentPopulationInfected
+From CovidPortfolioProject..CovidDeaths
+--Where location like '%states%'
+Group by Location, Population
+order by PercentPopulationInfected desc
+
+
+-- 4.
+
+
+Select Location, Population,date, MAX(total_cases) as HighestInfectionCount,  Max((Cast(total_cases as float)/population))*100 as PercentPopulationInfected
+From CovidPortfolioProject..CovidDeaths
+--Where location like '%states%'
+Group by Location, Population, date
+order by PercentPopulationInfected desc
+
+
+
+
+
+
+
+
+
+
+
+
